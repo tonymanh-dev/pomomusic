@@ -1,29 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 const renderTime = ({ remainingTime }) => {
-    if (remainingTime === 0) {
-        return <div className="timer">Too lale...</div>;
-    }
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
 
-    return (
-        <div className="timer">
-            <div className="value " style={{ fontSize: '70px' }}>
-                {remainingTime}
-            </div>
-        </div>
-    );
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-const CountdownTimer = () => {
+const CountdownTimer = ({ isPlaying, timer, keyTimer, handlePromodoro }) => {
     return (
         <div className="d-flex justify-content-center">
             <CountdownCircleTimer
-                isPlaying={false}
-                duration={100}
+                key={keyTimer}
+                isPlaying={isPlaying}
+                duration={timer}
                 colors={['rgba(255,255,255,1)']}
                 colorsTime={['']}
-                onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                onComplete={handlePromodoro}
                 trailColor="#f4664c"
                 strokeWidth="6"
                 size="240"

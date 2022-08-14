@@ -13,11 +13,17 @@ export const modeBtn = [
         label: 'Pomodoro',
     },
     {
-        id: 'shortBreak',
+        id: 'short_break',
         label: 'Short Break',
     },
     {
-        id: 'longBreak',
+        id: 'long_break',
         label: 'Long Break',
     },
+];
+
+export const dummyTasks = [
+    { id: 3, name: 'Finish homework', completed: false },
+    { id: 1, name: 'Do something', completed: true },
+    { id: 2, name: 'Keep your mind', completed: false },
 ];

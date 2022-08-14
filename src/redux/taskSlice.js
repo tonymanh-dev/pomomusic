@@ -1,14 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { dummyTasks } from '../constanst';
 
 const taskSlice = createSlice({
     name: 'tasks',
-
-    // Ininitial value
-    initialState: [
-        { id: 1, name: 'Do something', completed: true },
-        { id: 2, name: 'Keep your mind', completed: false },
-        { id: 3, name: 'Finish your homework', completed: false },
-    ],
+    initialState: dummyTasks,
 
     // Action of updating new value into current state
     reducers: {
@@ -23,11 +18,12 @@ const taskSlice = createSlice({
         },
         deleteTask: (state, action) => {
             state.splice(
-                state.findIndex((item) => item.id === action.payload),
+                state.findIndex((index) => index.id === action.payload),
                 1,
             );
         },
     },
 });
+export const { addNewTask, toggleTaskStatus, deleteTask } = taskSlice.actions;
 
-export default taskSlice;
+export default taskSlice.reducer;

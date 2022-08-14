@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Settings from './Settings';
+import Settings from './Settings/Index';
 
 const links = [
     { label: 'Pomodoro', to: '/pomodoro' },
@@ -10,7 +10,7 @@ const links = [
 
 const Navbar = () => {
     return (
-        <nav className="navbar py-3 navbar-expand-md navbar-text">
+        <nav className="navbar bg-primary py-3 navbar-expand-md navbar-text">
             <div className="container-sm d-flex justify-content-space-between">
                 <button
                     type="button"
@@ -29,7 +29,7 @@ const Navbar = () => {
                 <div className="navbar-brand">
                     <Link
                         to=""
-                        className="text-light navbar-brand fs-2 text fw-bold h1"
+                        className="text-light navbar-brand fs-3 text fw-bold"
                     >
                         PomoMusic
                     </Link>
@@ -38,7 +38,7 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse me-5" id="navbarNav">
                     <ul className="navbar-nav ms-auto">
                         {links.map((link) => (
-                            <li key={link.label} className="nav-item ms-3">
+                            <li key={link.label} className="nav-item fs-5 ms-3">
                                 <Link
                                     className="nav-link text-light text me-0"
                                     to={link.to}
@@ -50,11 +50,10 @@ const Navbar = () => {
                         <li className="nav-item ms-3 ">
                             <span
                                 type="button"
-                                className=" nav-link text-light text me-0"
+                                className=" nav-link text-light fs-5 text me-0"
                                 data-bs-toggle="modal"
                                 data-bs-target="#settingsModal"
                             >
-                                {/* <i class="bi bi-gear me-2"></i> */}
                                 Settings
                             </span>
                         </li>
@@ -62,18 +61,18 @@ const Navbar = () => {
                             className="modal fade"
                             id="settingsModal"
                             tabIndex="-1"
-                            aria-labelledby="exampleModalLabel"
+                            aria-labelledby="setingModal"
                             aria-hidden="true"
                         >
                             <div className="modal-dialog ">
-                                <div className="modal-content p-3 rounded-3 ">
-                                    <div className="modal-header">
-                                        <h5
-                                            className="modal-title fs-3 text fw-bold text-secondary"
-                                            id="exampleModalLabel"
+                                <div className="modal-content p-4 rounded-1 ">
+                                    <div className="modal-header pt-0">
+                                        <h6
+                                            className="modal-title fs-4 text fw-bold text-secondary"
+                                            id="setingModal"
                                         >
                                             Settings
-                                        </h5>
+                                        </h6>
                                         <button
                                             type="button"
                                             className="btn-close "
@@ -84,19 +83,13 @@ const Navbar = () => {
                                     <div className="modal-body">
                                         <Settings />
                                     </div>
-                                    <div className="modal-footer">
+                                    <div className="modal-footer border-0">
                                         <button
                                             type="button"
-                                            className="btn btn-secondary rounded-pill bg-light  text-secondary fs-5 text fw-bold px-3 py-2 me-4"
+                                            className="btn btn-primary text-light rounded-pill fs-4 fw-bold px-4 py-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Close
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary rounded-pill fs-5 text fw-bold px-3 py-2"
-                                        >
-                                            Save changes
+                                            Okay
                                         </button>
                                     </div>
                                 </div>
@@ -119,11 +112,11 @@ const Navbar = () => {
                             height="30"
                             className="d-inline-block align-text-top rounded-circle"
                         />
-                        <span className="d-none d-sm-block fs-4 text text-light fw-bolder ms-2">
+                        <span className="d-none d-sm-block fs-5 text text-light fw-bolder ms-2">
                             Tony
                         </span>
                     </button>
-                    <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
+                    {/* <ul className="dropdown-menu dropdown-menu-end dropdown-menu-lg-start">
                         <li>
                             <h6 className="dropdown-item hover fs-4 text">
                                 Themes
@@ -139,7 +132,7 @@ const Navbar = () => {
                                 Log out
                             </h6>
                         </li>
-                    </ul>
+                    </ul> */}
                 </div>
             </div>
         </nav>

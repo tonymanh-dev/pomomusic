@@ -1,9 +1,10 @@
 import React from 'react';
+import Upload from '../components/Music/Upload';
 
 const Pomodoro = () => {
     return (
         <div>
-            <h1 className="text-light">Pomodoro</h1>
+            <Upload />
         </div>
     );
 };

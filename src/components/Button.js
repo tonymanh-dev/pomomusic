@@ -1,17 +1,16 @@
 import React from 'react';
 
-const Button = ({ title, active, _callback }) => {
-    const styleBtn = `${active} btn  text`;
+const Button = ({ title, active, onClick }) => {
+    // const styleBtn = '';
 
     return (
         <button
             type="button"
-            className={styleBtn}
-            onClick={_callback}
+            className="btn btn-text-primary fs-5"
+            onClick={onClick}
             style={{
-                color: active ? '#f4664c' : '#fff',
+                color: active ? '#f4664c' : '',
                 // minWidth: '60px',
-                fontSize: '16px',
                 lineHeight: '1.2',
                 padding: '10px',
                 fontWeight: '600',
