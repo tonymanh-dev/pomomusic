@@ -1,17 +1,29 @@
 import React from 'react';
-import Timer from '../components/Timer/Index';
-import Tasks from '../components/Tasks/Index';
+import Timer from '../components/Timer/Timer';
+import Tasks from '../components/Tasks/Tasks';
 import Music from '../components/Music/Music';
-import Playlist from '../components/Music/Playlist';
+import About from '../components/About';
 
 const Home = () => {
     return (
-        <div className="container pt-3 ">
-            <Timer />
-            <Tasks />
-            {/* <Playlist /> */}
-            <Music />
-        </div>
+        <>
+            <div
+                className="container-fluid bg-primary"
+                style={{
+                    paddingTop: '60px',
+                    paddingBottom: '60px',
+                    width: '100%',
+                }}
+                id="home"
+            >
+                <Timer />
+                <Tasks />
+            </div>
+            <div>
+                <Music />
+                <About />
+            </div>
+        </>
     );
 };
 

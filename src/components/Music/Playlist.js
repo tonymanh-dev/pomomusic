@@ -4,12 +4,19 @@ import { closePlaylist, handlePickSong } from '../../redux/musicSlice';
 
 const Playlist = () => {
     const [songInput, setSongInput] = useState('');
+
     const dispatch = useDispatch();
-    const { songs, isPlaylist } = useSelector((state) => state.music);
-    if (!songs) return;
+    const { currentSong, songs, isPlaylist } = useSelector(
+        (state) => state.music,
+    );
 
     const handleSearch = () => {
-        return songs?.filter(
+        // Sorting name alphabetically
+        const nameAscending = [...songs].sort((a, b) =>
+            a.name > b.name ? 1 : -1,
+        );
+
+        return nameAscending?.filter(
             (song) =>
                 song.name.toLowerCase().includes(songInput) ||
                 song.name.toUpperCase().includes(songInput),
@@ -19,12 +26,14 @@ const Playlist = () => {
     return (
         <div className="position-ralative container">
             <div
-                className="position-fixed h-100 px-3 d-flex flex-column align-items-center align-items-md-start shadow-sm w-auto w-md-25"
+                className="position-fixed h-100 px-3 d-flex flex-column align-items-center align-items-md-start shadow-lg"
                 style={{
-                    top: '0px',
+                    top: '0',
+                    right: '0',
+                    left: isPlaylist ? '0' : '-120%',
                     maxWidth: '400px',
                     minWidth: '360px',
-                    left: isPlaylist ? '0' : '-100%',
+                    zIndex: '20 ',
                     transition: '550ms',
                     backgroundImage:
                         'linear-gradient(to left bottom, #f4664c, #f66c48, #f77244, #f87941, #f97f3d)',
@@ -64,39 +73,51 @@ const Playlist = () => {
                         <i className="bi bi-search "></i>
                     </button>
                 </div>
-                <div className="w-100">
+                <div
+                    className="w-100"
+                    style={{ overflow: 'auto', paddingBottom: '10rem' }}
+                >
                     <ul className="list-group list-group-flush ">
                         {handleSearch().map((item) => (
                             <li
                                 type="button"
-                                key={item.name}
-                                className="list-group-item-action border-0 w-100 py-1 px-0 d-flex align-items-center px-3 rounded-1 "
-                                // style={{ color: '#f4664c' }}
+                                key={item.id}
+                                className="list-group-item-action border-0 w-100 py-2 px-0 my-1 d-flex align-items-center px-3 rounded-1"
                                 onClick={() => dispatch(handlePickSong(item))}
+                                style={{
+                                    backgroundColor:
+                                        currentSong?.id === item.id
+                                            ? 'rgba(255,255,255,0.2)'
+                                            : '',
+                                }}
                             >
                                 <div className="me-2 shadow">
                                     <img
                                         className="rounded"
                                         style={{
-                                            height: '34px',
-                                            width: '34px',
+                                            height: '38px',
+                                            width: '38px',
                                             objectFit: 'cover',
                                         }}
                                         src={item.image_url}
                                         alt=""
                                     />
                                 </div>
-                                <div className="d-flex flex-column">
-                                    <span className="fw-bold fs-6 ">
+                                <div
+                                    className="d-flex flex-column"
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                    }}
+                                >
+                                    <span className="fw-bold fs-5 ">
                                         {item.name}
                                     </span>
                                     <span style={{ fontSize: '12px' }}>
                                         {item.type ? item.type : 'Lofi'}
                                     </span>
                                 </div>
-                                {/* <div>
-                                    <span>{duration}</span>
-                                </div> */}
                             </li>
                         ))}
                     </ul>

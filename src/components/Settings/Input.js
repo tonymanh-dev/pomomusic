@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Input = ({ label, type, id, value, onChange, min }) => {
+export const Input = ({ label, type, id, value, name, onChange, min }) => {
     return (
         <div>
             {label && (
@@ -17,9 +17,10 @@ export const Input = ({ label, type, id, value, onChange, min }) => {
                 min={min}
                 id={id}
                 value={value}
+                name={name}
                 onChange={onChange}
-                className="form-control fs-5 ps-2 p-2 bg-light text-dark rounded border-0 fw-semibold"
-                style={{ maxWidth: '90px' }}
+                className="form-control fs-5 ps-2 p-2 text-dark rounded-1 border-0 fw-semibold"
+                style={{ maxWidth: '90px', background: '#f0f2f5' }}
             />
         </div>
     );

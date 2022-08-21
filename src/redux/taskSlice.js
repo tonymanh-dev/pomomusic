@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dummyTasks } from '../constanst';
+import { dummyTasks } from '../Utils/constant';
 
 const taskSlice = createSlice({
     name: 'tasks',

@@ -1,30 +1,30 @@
 import React from 'react';
 
 const Subtitle = ({ song }) => {
-    if (!song) return;
     return (
         <div
-            className="d-flex flex-column mx-3 gap-1"
-            style={{ maxHeight: '50px' }}
+            className="d-flex flex-column mx-3"
+            style={{ maxHeight: '50px', width: '100%' }}
         >
             <p
-                className=" fw-bold mb-0 text-center lh-sm text-md-start "
+                className=" fw-bold mb-0 fs-6 text-center lh-sm text-md-start "
                 style={{
-                    fontSize: '12px',
                     overflow: 'hidden',
-                    // maxWidth: '120px',
+                    // maxWidth: '100%',
                     // whiteSpace: 'nowrap',
-                    // textOverflow: 'clip',
+                    // textOverflow: 'hidden',
                 }}
             >
                 {song.name}
             </p>
-            <p
-                className="mb-0 d-flex justify-content-md-start justify-content-center text-capitalize"
-                style={{ fontSize: '10px' }}
-            >
-                {song.type}
-            </p>
+            {song.type && (
+                <p
+                    className="mb-0 d-flex justify-content-md-start justify-content-center"
+                    style={{ fontSize: '12px' }}
+                >
+                    {song.type}
+                </p>
+            )}
         </div>
     );
 };

@@ -13,14 +13,13 @@ const CountdownTimer = ({ isPlaying, timer, keyTimer, handlePromodoro }) => {
         <div className="d-flex justify-content-center">
             <CountdownCircleTimer
                 key={keyTimer}
-                isPlaying={isPlaying}
+                size="280"
+                colors={['#fff']}
+                trailColor={'#f4664c'}
+                strokeWidth="5"
                 duration={timer}
-                colors={['rgba(255,255,255,1)']}
-                colorsTime={['']}
+                isPlaying={isPlaying}
                 onComplete={handlePromodoro}
-                trailColor="#f4664c"
-                strokeWidth="6"
-                size="240"
             >
                 {renderTime}
             </CountdownCircleTimer>

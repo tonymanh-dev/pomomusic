@@ -6,7 +6,7 @@ const Toggle = ({ on, onClick }) => {
             style={{
                 height: '28px',
                 width: '54px',
-                backgroundColor: on ? '#0ecb81' : 'rgb(204, 204, 204)',
+                backgroundColor: on ? '#22c55e' : 'rgb(220, 220, 220)',
                 position: 'relative',
                 borderRadius: '2rem',
                 transition: 'backgroundColor 0.6s ease',

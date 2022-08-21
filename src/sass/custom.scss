@@ -17,14 +17,16 @@ $primary: #f4664c;
 $secondary: $gray-600;
 $light: $gray-100;
 $dark: $gray-800;
+$info: $gray-600;
 
 // Body
 //
 // Settings for the `<body>` element.
 
-$body-bg: $primary;
+$body-bg: $white;
 $body-color: $gray-700;
 $body-text-align: null;
+$list-group-color: $gray-700;
 
 //Theme colors map
 $theme-colors: (
@@ -85,6 +87,7 @@ $btn-active-bg-shade-amount: 0;
 $btn-active-bg-tint-amount: 0;
 $btn-active-border-shade-amount: 0;
 $btn-active-border-tint-amount: 0;
+$btn-link-hover-color: $primary;
 
 $btn-active-box-shadow: none;
 $btn-box-shadow: none;

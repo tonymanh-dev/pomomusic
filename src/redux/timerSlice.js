@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { POMODORO, SHORT_BREAK, LONG_BREAK } from '../constanst';
+import { POMODORO, SHORT_BREAK, LONG_BREAK } from '../Utils/constant';
 
 const initialState = {
     mode: POMODORO,
@@ -8,22 +8,22 @@ const initialState = {
     countBreaks: 0,
     music: true,
     autoPomodoros: true,
-    longBreakInterval: 3,
+    longBreakInterval: 4,
     modes: {
         [POMODORO]: {
             id: POMODORO,
             label: 'Pomodoro',
-            time: 25,
+            time: 45,
         },
         [SHORT_BREAK]: {
             id: SHORT_BREAK,
             label: 'Short Break',
-            time: 2,
+            time: 5,
         },
         [LONG_BREAK]: {
             id: LONG_BREAK,
             label: 'Long Break',
-            time: 3,
+            time: 10,
         },
     },
 };

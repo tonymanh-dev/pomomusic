@@ -1,15 +1,15 @@
 import React from 'react';
 
-const MusicBtn = ({ type, onClick, size, onShuffle }) => {
-    let fontSize = '20px';
+const MusicBtn = ({ type, onClick, size, shuffle }) => {
+    let fontSize = '22px';
     if (size === 'large') {
-        fontSize = '24px';
+        fontSize = '30px';
     }
     if (size === 'small') {
-        fontSize = '14px';
+        fontSize = '16px';
     }
     if (type === 'bi bi-shuffle') {
-        fontSize = '12px';
+        fontSize = '14px';
     }
 
     return (
@@ -25,10 +25,10 @@ const MusicBtn = ({ type, onClick, size, onShuffle }) => {
             onClick={onClick}
         >
             <i className={type}></i>
-            {onShuffle && (
+            {shuffle && (
                 <i
                     className="bi bi-dot position-absolute"
-                    style={{ bottom: '-4px' }}
+                    style={{ bottom: '-6px' }}
                 ></i>
             )}
         </div>

@@ -4,7 +4,11 @@ import timerSlice from './timerSlice';
 import musicSlice from './musicSlice';
 
 const store = configureStore({
-    reducer: { tasks: taskSlice, timer: timerSlice, music: musicSlice },
+    reducer: {
+        tasks: taskSlice,
+        timer: timerSlice,
+        music: musicSlice,
+    },
 });
 
 export default store;

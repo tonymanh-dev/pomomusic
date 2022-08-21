@@ -1,119 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { db } from './firebaseConfig';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDocs, collection } from 'firebase/firestore';
 import ReactPlayer from 'react-player';
 
 import {
-    onReady,
     handleDuration,
-    handlePlaying,
     handleProgress,
-    updatePlaylist,
-    handleMute,
-    handleVolumeChange,
-    handleVolumeSeek,
-    handleSeek,
-    handleSeekMouseDown,
-    handleSeekMouseUp,
-    toggleLoop,
-    toggleShuffle,
     toggleIsPlaylist,
+    handleNextSong,
 } from '../../redux/musicSlice';
-import TextAnimate from './TextAnimate';
 import Subtitle from './Subtitle';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Controlers from './Controlers';
 import Volume from './Volume';
 import Playlist from './Playlist';
 
-const format = (seconds) => {
-    if (isNaN(seconds)) {
-        return '00:00';
-    }
-    const date = new Date(seconds * 1000);
-
-    const hour = date.getUTCHours();
-    const min = date.getUTCMinutes();
-    const sec = date.getUTCSeconds().toString().padStart(2, '0');
-
-    if (hour) {
-        return `${hour}:${min.toString().padStart(2, '0')}:${sec}`;
-    }
-    return `${min}: ${sec}`;
-};
-
+// Fix re-render this component
 const Music = () => {
-    // const [progress, setProgress] = useState({});
     const dispatch = useDispatch();
-    const {
-        isPlaying,
-        muted,
-        played,
-        volume,
-        loop,
-        shuffle,
-        seeking,
-        isPlaylist,
-        currentSong,
-        songs,
-    } = useSelector((state) => state.music);
-    const songDefault = songs[1];
-    console.log('Playlist:', isPlaylist);
-    console.log(currentSong);
-
-    // Check seeking
+    const { isPlaying, muted, volume, loop, currentIndex, currentSong, songs } =
+        useSelector((state) => state.music);
+    const nowPlaying = songs[currentIndex];
 
     const playRef = useRef(null);
-    const playlistRef = collection(db, 'songs');
-
-    // // Get data from Firestore
-    useEffect(() => {
-        const getPlaylist = async () => {
-            const data = await getDocs(playlistRef);
-            const dataFire = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            // console.log(dataFire);
-            dispatch(updatePlaylist(dataFire));
-        };
-
-        getPlaylist();
-    }, []);
-
-    // Having issue when get current time by this method
-    // Pretty slow especial when music is stopped => Find anther method
-    const currentTime =
-        playRef && playRef.current ? playRef.current.getCurrentTime() : '00:00';
-
-    // Ok
-    const duration =
-        playRef && playRef.current ? playRef.current.getDuration() : '00:00';
-
-    const elapsedTime = format(currentTime);
-    const totalDuration = format(duration);
-
-    // console.log('Elapsed time', elapsedTime);
-
-    console.log(
-        'Current time:',
-        playRef && playRef.current ? playRef.current : 'Coming...',
-    );
+    // console.log('Current song:', nowPlaying)
 
     return (
         <>
             <Playlist />
             <div
-                className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center py-2 text-light"
+                className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center pb-5 pb-md-2 pt-2 text-light shadow-lg"
                 style={{
                     bottom: '0',
                     left: '0',
+                    zIndex: '30',
                     backgroundImage:
                         'linear-gradient(to left, #f4664c, #f66c48, #f77244)',
-                    // background: '#f57660',
-                    // borderTop: '1px solid rgba(255, 255, 255, 0.2)',
-                    boxShadow: 'rgba(0, 0, 0, 0.2) 0px 5px 12px',
                 }}
             >
                 <div
@@ -122,14 +43,14 @@ const Music = () => {
                         maxWidth: '1300px',
                     }}
                 >
-                    <div className="col-12 col-md-4 col-lg-3">
+                    <div className="col-12 col-md-4 col-lg-4 pe-4">
                         <div className="d-flex justify-content-between align-items-center">
                             <div>
                                 <img
                                     src={
                                         currentSong
                                             ? currentSong?.image_url
-                                            : songDefault?.image_url
+                                            : nowPlaying?.image_url
                                     }
                                     alt=""
                                     className="rounded-1"
@@ -142,9 +63,8 @@ const Music = () => {
                             </div>
 
                             <Subtitle
-                                song={currentSong ? currentSong : songDefault}
+                                song={currentSong ? currentSong : nowPlaying}
                             />
-                            {/* <TextAnimate title={nowPlay?.name} /> */}
                             <div className="d-flex gap-3 align-items-center">
                                 <OverlayTrigger
                                     placement="top"
@@ -184,10 +104,9 @@ const Music = () => {
                     </div>
                     <ReactPlayer
                         ref={playRef}
-                        url={
-                            currentSong ? currentSong?.link : songDefault?.link
-                        }
+                        url={currentSong ? currentSong?.link : nowPlaying?.link}
                         playing={isPlaying}
+                        onEnded={!loop ? () => dispatch(handleNextSong()) : {}}
                         loop={loop}
                         muted={muted}
                         volume={volume}
@@ -202,44 +121,11 @@ const Music = () => {
                             },
                         }}
                     />
-                    <div className=" col-12 col-md-4 col-lg-6">
-                        <Controlers
-                            // ref={controlerRef}
-                            isPlaying={isPlaying}
-                            onPlay={() => dispatch(handlePlaying())}
-                            loop={loop}
-                            onLoop={() => dispatch(toggleLoop())}
-                            shuffle={shuffle}
-                            onShuffle={() => dispatch(toggleShuffle())}
-                            onVolumeSeek={(e) => dispatch(handleVolumeSeek(e))}
-                            played={played}
-                            onSeek={(e) => dispatch(handleSeek(e))}
-                            onSeekMouseDown={() =>
-                                dispatch(handleSeekMouseDown())
-                            }
-                            onSeekMouseUp={(e) => {
-                                dispatch(
-                                    handleSeekMouseUp(
-                                        playRef.current.seekTo(
-                                            e / 100,
-                                            'fraction',
-                                        ),
-                                    ),
-                                );
-                            }}
-                            elapsedTime={elapsedTime}
-                            totalDuration={totalDuration}
-                        />
+                    <div className=" col-12 col-md-4 col-lg-4 px-4 px-md-0">
+                        <Controlers playRef={playRef} />
                     </div>
-                    <div className="d-none d-md-flex col-md-4 col-lg-3 justify-content-end">
-                        <Volume
-                            volume={volume}
-                            onVolumeChange={(e) =>
-                                dispatch(handleVolumeChange(e.target.value))
-                            }
-                            muted={muted}
-                            onMuted={() => dispatch(handleMute())}
-                        />
+                    <div className="d-none d-md-flex col-md-4 col-lg-4 justify-content-end ps-4">
+                        <Volume />
                     </div>
                 </div>
             </div>

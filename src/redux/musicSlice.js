@@ -1,4 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
+
+const initSong = {
+    id: '8DPsEtiwcHbpCPJjjrtG',
+    image_url:
+        'https://images.unsplash.com/photo-1605455447870-74140e959c8e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+    link: 'https://youtu.be/LCHJY1M-RP4',
+    name: 'Good morning, enjoy your day with this playlist',
+    type: 'Pop songs',
+};
 
 const initState = {
     onReady: false,
@@ -10,7 +19,8 @@ const initState = {
     loop: false,
     shuffle: false,
     seeking: false,
-    currentSong: '',
+    currentSong: initSong,
+    currentIndex: 0,
     controls: false,
     duration: 0,
     isPlaylist: false,
@@ -19,40 +29,61 @@ const initState = {
 
 const musicSlice = createSlice({
     name: 'music',
-
     initialState: initState,
     reducers: {
         updatePlaylist: (state, action) => {
             state.songs = action.payload;
-
-            // const newSongId = action.payload.id;
-            // if (state.every((item) => item.id !== newSongId)) {
-            //     state.push(action.payload);
-            // }
         },
         onReady: (state) => {
             state.onReady = true;
         },
-        handlePlaying: (state) => {
+        togglePlaying: (state) => {
             state.isPlaying = !state.isPlaying;
-        },
-        handleMute: (state) => {
-            state.muted = !state.muted;
         },
         handleDuration: (state, action) => {
             state.duration = action.payload;
-            console.log(action.payload);
         },
         handleProgress: (state, action) => {
             if (!state.seeking) state.played = action.payload.played;
         },
+
+        // Volume controler
+        toggleMute: (state) => {
+            state.muted = !state.muted;
+        },
         handleVolumeChange: (state, action) => {
-            state.volume = parseFloat(action.payload);
+            state.volume = parseFloat(action.payload / 100);
             state.muted = action.payload === 0 ? true : false;
         },
-        handleVolumeSeek: (state, action) => {
-            state.volume = parseFloat(action.payload);
-            state.muted = action.payload === 0 ? true : false;
+
+        // Music controler
+        handleNextSong: (state) => {
+            const songs = current(state.songs);
+            const curIndex = songs.findIndex(
+                (song) => song.id === state.currentSong?.id,
+            );
+            const random = Math.floor(Math.random() * songs.length);
+            const nextSong =
+                songs[
+                    state.shuffle && random !== curIndex ? random : curIndex + 1
+                ];
+
+            state.currentSong =
+                songs.length - 1 > curIndex ? nextSong : songs[0];
+        },
+        handlePrevSong: (state) => {
+            const songs = current(state.songs);
+            const curIndex = songs.findIndex(
+                (song) => song.id === state.currentSong?.id,
+            );
+            const random = Math.floor(Math.random() * songs.length);
+            const prevSong =
+                songs[
+                    state.shuffle && random !== curIndex ? random : curIndex - 1
+                ];
+
+            state.currentSong =
+                curIndex > 0 ? prevSong : songs[songs.length - 1];
         },
         handleSeek: (state, action) => {
             state.played = parseFloat(action.payload / 100);
@@ -69,6 +100,7 @@ const musicSlice = createSlice({
         toggleShuffle: (state) => {
             state.shuffle = !state.shuffle;
         },
+
         // Playlist
         toggleIsPlaylist: (state) => {
             state.isPlaylist = !state.isPlaylist;
@@ -86,10 +118,13 @@ export const {
     updatePlaylist,
     handleDuration,
     handleProgress,
-    handlePlaying,
-    handleMute,
+    togglePlaying,
+
+    toggleMute,
     handleVolumeChange,
-    handleVolumeSeek,
+
+    handleNextSong,
+    handlePrevSong,
     handleSeek,
     handleSeekMouseDown,
     handleSeekMouseUp,
