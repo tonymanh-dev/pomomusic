@@ -16,6 +16,7 @@ import {
     handleCountToLongBreak,
 } from '../../redux/timerSlice';
 import { togglePlaying } from '../../redux/musicSlice';
+import { Spinner } from 'react-bootstrap';
 
 const Timer = () => {
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Timer = () => {
     } = useSelector((state) => state.timer);
     const { isPlaying } = useSelector((state) => state.music);
 
-    const time = modes[mode].time * 60;
+    const time = modes[mode]?.time * 60;
 
     const handleStart = () => {
         dispatch(onStart());

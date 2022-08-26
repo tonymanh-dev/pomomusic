@@ -7,7 +7,6 @@ import Spinner from '../Spinner';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import { noPhoto } from '../../Utils/constant';
 
 const links = [
     { label: 'About', to: '#about' },
@@ -16,7 +15,7 @@ const links = [
 
 const Navbar = () => {
     const [isShow, setIsShow] = useState(false);
-    const { isLoading, user, handleLogout } = useContext(UserContext);
+    const { isLoading, user, handleLogout, pathname } = useContext(UserContext);
     const navigate = useNavigate();
 
     const handleShowModal = () => {
@@ -67,29 +66,31 @@ const Navbar = () => {
                         </Link>
                     </div>
 
-                    <div className="collapse navbar-collapse  me-4">
-                        <ul className="navbar-nav ms-auto align-items-center">
-                            {links.map((link) => (
-                                <li key={link.to} className="nav-item">
-                                    <a
-                                        className="nav-link fs-4 text-light"
-                                        href={link.to}
+                    {pathname === '/' && (
+                        <div className="collapse navbar-collapse  me-4">
+                            <ul className="navbar-nav ms-auto align-items-center">
+                                {links.map((link) => (
+                                    <li key={link.to} className="nav-item">
+                                        <a
+                                            className="nav-link fs-4 text-light"
+                                            href={link.to}
+                                        >
+                                            {link.label}
+                                        </a>
+                                    </li>
+                                ))}
+                                <li className="nav-item">
+                                    <button
+                                        type="button"
+                                        className="btn border-0 px-2 text-light fs-4 text me-0"
+                                        onClick={handleShowModal}
                                     >
-                                        {link.label}
-                                    </a>
+                                        Settings
+                                    </button>
                                 </li>
-                            ))}
-                            <li className="nav-item">
-                                <button
-                                    type="button"
-                                    className="btn border-0 px-2 text-light fs-4 text me-0"
-                                    onClick={handleShowModal}
-                                >
-                                    Settings
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    )}
 
                     {user ? (
                         <div className="d-flex">
@@ -140,17 +141,19 @@ const Navbar = () => {
                                     type="button"
                                     className="btn py-0 px-0 d-flex align-items-center rounded-pill border-0"
                                 >
-                                    <img
-                                        src={
-                                            user.photoURL === null
-                                                ? noPhoto
-                                                : user.photoURL
-                                        }
-                                        alt=""
-                                        width="28"
-                                        height="28"
-                                        className="d-inline-block align-text-top rounded-circle"
-                                    />
+                                    {user.image_url ? (
+                                        <img
+                                            src={user.photoURL}
+                                            alt=""
+                                            width="28"
+                                            height="28"
+                                            className="d-inline-block align-text-top border rounded-circle"
+                                        />
+                                    ) : (
+                                        <span className="fs-2 text-light">
+                                            <i className="bi bi-person-circle"></i>
+                                        </span>
+                                    )}
                                     <span
                                         className="d-none d-sm-flex fs-5 text text-light fw-bolder ms-2"
                                         style={{

@@ -1,6 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { auth, db } from '../firebase/firebaseConfig';
-import { collection, onSnapshot } from 'firebase/firestore';
+import {
+    getDocs,
+    setDoc,
+    doc,
+    collection,
+    onSnapshot,
+} from 'firebase/firestore';
 import {
     signOut,
     signInWithPopup,
@@ -9,10 +15,12 @@ import {
     onAuthStateChanged,
     updateProfile,
 } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updatePlaylist } from '../redux/musicSlice';
-import { ADMIN_UID } from '../Utils/constant';
+import { updateData } from '../redux/timerSlice';
+import { updateTasks } from '../redux/taskSlice';
+import { ADMIN_UID, initUserData } from '../Utils/constant';
 
 const UserContext = createContext();
 
@@ -31,12 +39,14 @@ const UserProvider = ({ children }) => {
         email: '',
         password: '',
     });
-
+    const { pathname } = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const playlistRef = collection(db, 'songs');
 
-    // Get playlist from Firestore
+    const playlistRef = collection(db, 'songs');
+    const usersRef = collection(db, 'users');
+
+    // Get realtime data from Firestore
     useEffect(() => {
         const getData = async () => {
             try {
@@ -54,6 +64,12 @@ const UserProvider = ({ children }) => {
                     dispatch(updatePlaylist(userPlaylist));
                     setIsLoading(false);
                 });
+
+                onSnapshot(doc(db, 'users', user?.uid), (doc) => {
+                    const { timer, tasks } = doc.data();
+                    dispatch(updateData(timer));
+                    dispatch(updateTasks(tasks));
+                });
             } catch (error) {
                 console.log(error.message);
             }
@@ -63,10 +79,20 @@ const UserProvider = ({ children }) => {
 
     //Handle log in with Provider and email & password
     const handleLogin = async (provider) => {
+        const docs = await getDocs(usersRef);
+        const userDocs = docs.docs.map((doc) => doc.id);
+
         if (!user) {
             if (provider) {
                 try {
                     const { user } = await signInWithPopup(auth, provider);
+
+                    // Create initial data in firestore (timer, tasks data) for Only new user
+                    const isExisted = userDocs.includes(user.uid);
+                    if (!isExisted) {
+                        await setDoc(doc(db, 'users', user.uid), initUserData);
+                    }
+
                     setUser(user);
                     navigate('/');
                 } catch (error) {
@@ -95,14 +121,12 @@ const UserProvider = ({ children }) => {
         }
     };
 
-    // Handle log out
     const handleLogout = async () => {
         await signOut(auth);
         setUser('');
         window.location.reload();
     };
 
-    // Handle log in by Email
     const handleRegister = async () => {
         try {
             const { user } = await createUserWithEmailAndPassword(
@@ -113,17 +137,14 @@ const UserProvider = ({ children }) => {
             await updateProfile(user, {
                 displayName: registerByEmail.displayName,
             });
-            const updatedProfile = {
-                uid: user.uid,
-                displayName: user.displayName,
-                email: user.email,
-                photoURL: user.photoURL,
-            };
+            // Create user initial data in firestore (timer, tasks data)
+            await setDoc(doc(db, 'users', user.uid), initUserData);
 
-            setUser(updatedProfile);
+            setUser(user);
             navigate('/');
         } catch (error) {
             setInvalid(error.message);
+            console.log(error.message);
         }
         setRegisterByEmail({
             displayName: '',
@@ -136,15 +157,12 @@ const UserProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            console.log('Current user:', currentUser);
         });
         return () => {
             unsubscribe();
         };
     }, []);
-
-    // Handle upload data to Firebase
-    //
-    // Update later
 
     return (
         <UserContext.Provider
@@ -160,6 +178,7 @@ const UserProvider = ({ children }) => {
                 setLoginByEmail,
                 invalid,
                 setInvalid,
+                pathname,
             }}
         >
             {children}

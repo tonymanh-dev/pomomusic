@@ -70,8 +70,8 @@ const About = () => {
                                 'Set your timer and add tasks to work on today',
                                 'Grab some music if you want something to boost your mood',
                                 'Start timer and focus on a single task until the timer rings. ',
-                                'When a task is done, mark off what you completed',
                                 'Then enjoy a 5 minute break. After each pomodoros, take a longer ',
+                                'When a task is done, mark off what you completed',
                             ].map((item) => (
                                 <li
                                     key={item}
@@ -83,11 +83,16 @@ const About = () => {
                         </ul>
                     </section>
                     <section className="mt-3">
-                        <h2 className={heading}>Features</h2>
+                        <h2 className={heading}>
+                            Features{' '}
+                            <span className="fs-6 fw-normal">
+                                (You need to log in to use all features)
+                            </span>
+                        </h2>
                         <ul className={paragraph}>
                             <li>
-                                Responsive design that works with desktop and
-                                mobile
+                                Responsive design that works desktop and
+                                mobile(It work better on desktop)
                             </li>
                             <li>
                                 Customizable timer intervals to suit your
@@ -95,7 +100,8 @@ const About = () => {
                             </li>
                             <li>Task list to manage your works</li>
                             <li>Music background during Pomodoro section</li>
-                            <li>Custom your favorite music</li>
+                            <li>Uploading favorite music</li>
+                            <li>And more...</li>
                         </ul>
                     </section>
                     <Footer />

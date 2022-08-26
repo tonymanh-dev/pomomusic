@@ -1,58 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    addNewTask,
-    toggleTaskStatus,
-    deleteTask,
-} from '../../redux/taskSlice';
+import { updateDoc, arrayUnion, doc } from 'firebase/firestore';
+import { db } from '../../firebase/firebaseConfig';
+import { UserContext } from '../../Context/UserContext';
+import { toggleComplete, addNewTask, deleteTask } from '../../redux/taskSlice';
+
 import { v4 as uuidv4 } from 'uuid';
 import TaskList from './TaskList';
 
 const Tasks = () => {
     const [nameTask, setNameTask] = useState('');
     const [open, setOpen] = useState(false);
-
     const dispatch = useDispatch();
-    const taskLists = useSelector((state) => state.tasks);
+
+    const { tasks } = useSelector((state) => state.tasks);
     const { session } = useSelector((state) => state.timer);
+    const { user } = useContext(UserContext);
 
-    const currentTask = taskLists.filter((status) => !status.completed);
-    const completedTasks = taskLists.filter((status) => status.completed);
+    const currentTask = tasks.filter((status) => !status.isComplete);
+    const completedTasks = tasks.filter((status) => status.isComplete);
 
-    const handleAddNewTask = (e) => {
-        e.preventDefault();
-        dispatch(
-            addNewTask({
-                id: uuidv4(),
-                name: nameTask,
-                completed: false,
-            }),
-        );
-        setNameTask('');
-    };
-
+    // Handle change form input
     const handleChangeInput = (e) => {
         setNameTask(e.target.value);
     };
 
-    const hanldeChangeStatus = (id) => {
-        dispatch(toggleTaskStatus(id));
+    // Handle add new task
+    const handleAddNewTask = async (e) => {
+        e.preventDefault();
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            const newTask = {
+                id: uuidv4(),
+                label: nameTask,
+                isComplete: false,
+            };
+            try {
+                await updateDoc(userRef, { tasks: arrayUnion(newTask) });
+            } catch (error) {
+                console.log(error.message);
+            }
+        } else {
+            // Handle for annonymous user
+            dispatch(
+                addNewTask({
+                    id: uuidv4(),
+                    label: nameTask,
+                    isComplete: false,
+                }),
+            );
+        }
+
+        setNameTask('');
     };
 
-    const handleDeleteTask = (id) => {
-        dispatch(deleteTask(id));
+    // Handle event tasks
+    const handleComplete = async (id) => {
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            const updatedTask = tasks.map((task) => {
+                return {
+                    ...task,
+                    isComplete:
+                        task.id === id ? !task.isComplete : task.isComplete,
+                };
+            });
+
+            try {
+                await updateDoc(userRef, { tasks: updatedTask });
+            } catch (error) {
+                console.log(error.message);
+            }
+        } else {
+            // Handle for annonymous user
+            dispatch(toggleComplete(id));
+        }
     };
 
-    const toggleCompletedTask = () => {
-        setOpen(!open);
+    const handleDelete = async (id) => {
+        if (user) {
+            const userRef = doc(db, 'users', user.uid);
+            const updatedTask = tasks.filter((task) => task.id !== id);
+
+            try {
+                await updateDoc(userRef, { tasks: updatedTask });
+            } catch (error) {
+                console.log(error.message);
+            }
+        } else {
+            // Handle for annonymous user
+            dispatch(deleteTask(id));
+        }
     };
 
     return (
-        <div className="d-flex flex-column justify-content-center align-items-center mt-3">
+        <div className="d-flex flex-column justify-content-center align-items-center mt-2">
             <div className="text-center">
                 <div className="text-light fw-bold fs-4">#{session}</div>
                 <span className="text-light fw-bold fs-4">
-                    {currentTask.length > 0 && currentTask[0].name}
+                    {currentTask.length > 0 && currentTask[0].label}
                 </span>
             </div>
 
@@ -99,14 +145,12 @@ const Tasks = () => {
 
                     <div className="my-4">
                         <span className="text-light form-label fw-bold fs-5">
-                            Your Tasks (
-                            {taskLists.filter((task) => !task.completed).length}
-                            )
+                            Your Tasks ({currentTask.length})
                         </span>
                         <TaskList
                             taskLists={currentTask}
-                            hanldeChangeStatus={hanldeChangeStatus}
-                            handleDeleteTask={handleDeleteTask}
+                            handleComplete={handleComplete}
+                            handleDelete={handleDelete}
                         />
                     </div>
                 </div>
@@ -114,7 +158,7 @@ const Tasks = () => {
                 {/* Completed tasks */}
                 <div>
                     <div
-                        onClick={toggleCompletedTask}
+                        onClick={() => setOpen(!open)}
                         style={{ cursor: 'pointer' }}
                     >
                         {open && completedTasks.length > 0 ? (
@@ -129,8 +173,8 @@ const Tasks = () => {
                     {open && (
                         <TaskList
                             taskLists={completedTasks}
-                            hanldeChangeStatus={hanldeChangeStatus}
-                            handleDeleteTask={handleDeleteTask}
+                            handleComplete={handleComplete}
+                            handleDelete={handleDelete}
                         />
                     )}
                 </div>

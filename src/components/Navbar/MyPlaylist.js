@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { db } from '../../firebase/firebaseConfig';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../Context/UserContext';
 import { ADMIN_UID } from '../../Utils/constant';
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -17,8 +16,6 @@ const MyPlaylist = () => {
 
     const { songs } = useSelector((state) => state.music);
     const navigate = useNavigate();
-
-    if (!songs) return <Spinner />;
 
     const handleSearch = () => {
         return songs.filter(
@@ -52,7 +49,7 @@ const MyPlaylist = () => {
     return (
         <div
             className="container-sm"
-            style={{ paddingTop: '80px', maxWidth: '500px' }}
+            style={{ paddingTop: '80px', maxWidth: '720px' }}
         >
             <div className=" text-start">
                 <div className="d-flex justify-content-between align-items-center mb-4">
@@ -62,7 +59,7 @@ const MyPlaylist = () => {
                     </h2>
                     <button
                         type="button"
-                        className="btn border-0 fw-bold  fs-5 text-secondary"
+                        className="btn border-0 fw-bold  fs-4 text-secondary"
                         onClick={() => navigate('/uploadmusic')}
                     >
                         <i className="bi bi-plus-circle me-1 fs-4"></i>
@@ -76,7 +73,7 @@ const MyPlaylist = () => {
                         className="form-control ps-3 fs-4 rounded-pill border-0 "
                         placeholder="Search your song or playist"
                         style={{
-                            height: '44px',
+                            height: '46px',
                             backgroundColor: '#f0f2f5',
                         }}
                         value={songInput}
@@ -85,25 +82,21 @@ const MyPlaylist = () => {
                     <button
                         style={{
                             top: '0',
-                            right: '14px',
+                            right: '8px',
                             height: '100%',
                             position: 'absolute',
                         }}
-                        className="btn border-0 rounded-4 fs-4 text-secondary"
+                        className="btn border-0 rounded-4 fs-3 text-secondary"
                     >
                         <i className="bi bi-search "></i>
                     </button>
                 </div>
-                <div
-                    className="w-100"
-                    style={{ overflow: 'auto', paddingBottom: '10rem' }}
-                >
+                <div style={{ overflow: 'auto', paddingBottom: '10rem' }}>
                     <ul className="list-group list-group-flush ">
                         {handleSearch().map((item) => (
                             <li
-                                type="button"
                                 key={item.id}
-                                className="list-group-item-action border-0 w-100 py-2 px-0 d-flex align-items-center justify-content-between border-bottom"
+                                className="list-group-item-action border-0  py-2 px-0 d-flex align-items-center justify-content-between "
                             >
                                 <div className="d-flex align-items-center">
                                     <div className="me-2">
@@ -111,8 +104,8 @@ const MyPlaylist = () => {
                                             <img
                                                 className="rounded"
                                                 style={{
-                                                    height: '34px',
-                                                    width: '34px',
+                                                    height: '38px',
+                                                    width: '38px',
                                                     objectFit: 'cover',
                                                 }}
                                                 src={item.image_url}
@@ -122,29 +115,30 @@ const MyPlaylist = () => {
                                             <i className="bi bi-card-image fs-1 text-muted opacity-25 me-2"></i>
                                         )}
                                     </div>
-                                    <div className="d-flex flex-column text-start text-dark fs-5">
+                                    <div
+                                        className="d-flex flex-column text-start text-dark "
+                                        style={{ minWidth: '0' }}
+                                    >
                                         <Tippy
                                             content={item.name}
                                             delay={[200, null]}
                                             arrow="round"
                                             theme={'material'}
                                         >
-                                            <span
-                                                className="fw-bold "
+                                            <p
+                                                className="fw-bold fs-4 mb-0"
                                                 style={{
-                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
                                                     whiteSpace: 'nowrap',
-                                                    textOverflow: 'clip',
+                                                    overflow: 'hidden',
                                                 }}
                                             >
-                                                {item.name
-                                                    ? item.name
-                                                    : 'There is no name ☹️'}
-                                            </span>
+                                                {item.name}
+                                            </p>
                                         </Tippy>
-                                        <span className="">
+                                        <p className="fs-5 mb-0">
                                             {item.type ? item.type : 'Music'}
-                                        </span>
+                                        </p>
                                     </div>
                                 </div>
                                 {item.uid !== ADMIN_UID && (

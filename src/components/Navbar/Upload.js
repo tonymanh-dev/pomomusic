@@ -80,7 +80,7 @@ const Upload = () => {
     return (
         <div
             className="container-sm"
-            style={{ paddingTop: '80px', maxWidth: '500px' }}
+            style={{ paddingTop: '80px', maxWidth: '720px' }}
         >
             <div className=" text-center">
                 <div className="d-flex justify-content-between align-items-center pb-3 border-bottom">
@@ -90,7 +90,7 @@ const Upload = () => {
                     </h2>
                     <button
                         type="button"
-                        className="btn border-0 fw-bold  fs-5 text-secondary"
+                        className="btn border-0 fw-bold  fs-4 text-secondary"
                         onClick={() => navigate('/myplaylist')}
                     >
                         <i className="bi bi-music-note-list me-1 fs-4"></i>

@@ -11,8 +11,9 @@ const Home = () => {
                 className="container-fluid bg-primary"
                 style={{
                     paddingTop: '60px',
-                    paddingBottom: '60px',
+                    paddingBottom: '100px',
                     width: '100%',
+                    minHeight: '100vh',
                 }}
                 id="home"
             >

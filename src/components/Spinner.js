@@ -9,7 +9,7 @@ const Spinner = () => {
                 left: '0',
                 right: '0',
                 height: '100vh',
-                zIndex: '999',
+                zIndex: '999999',
                 overflow: 'hidden',
             }}
         >

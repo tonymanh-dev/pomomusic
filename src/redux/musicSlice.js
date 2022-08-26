@@ -20,7 +20,6 @@ const initState = {
     shuffle: false,
     seeking: false,
     currentSong: initSong,
-    currentIndex: 0,
     controls: false,
     duration: 0,
     isPlaylist: false,

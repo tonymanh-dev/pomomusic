@@ -1,29 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dummyTasks } from '../Utils/constant';
 
 const taskSlice = createSlice({
     name: 'tasks',
-    initialState: dummyTasks,
+    initialState: { tasks: [] },
 
-    // Action of updating new value into current state
     reducers: {
-        addNewTask: (state, action) => {
-            state.push(action.payload);
+        updateTasks: (state, { payload }) => {
+            state.tasks = payload;
         },
-        toggleTaskStatus: (state, action) => {
-            const currentTask = state.find(
-                (task) => task.id === action.payload,
-            );
-            if (currentTask) currentTask.completed = !currentTask.completed;
+
+        // For anonymous user
+        addNewTask: ({ tasks }, { payload }) => {
+            tasks.push(payload);
         },
-        deleteTask: (state, action) => {
-            state.splice(
-                state.findIndex((index) => index.id === action.payload),
+        toggleComplete: ({ tasks }, { payload }) => {
+            const curTask = tasks.find((task) => task.id === payload);
+            if (curTask) curTask.isComplete = !curTask.isComplete;
+        },
+        deleteTask: ({ tasks }, { payload }) => {
+            tasks.splice(
+                tasks.findIndex((index) => index.id === payload),
                 1,
             );
         },
     },
 });
-export const { addNewTask, toggleTaskStatus, deleteTask } = taskSlice.actions;
+export const { updateTasks, toggleComplete, deleteTask, addNewTask } =
+    taskSlice.actions;
 
 export default taskSlice.reducer;

@@ -22,11 +22,25 @@ export const modeBtn = [
     },
 ];
 
-export const dummyTasks = [
-    { id: 3, name: 'Finish homework by the end of the day', completed: false },
-    { id: 1, name: 'Checking something', completed: true },
-    { id: 2, name: 'Keep your mind at ease', completed: false },
-];
+export const dummyTasks = {
+    tasks: [
+        {
+            id: 3,
+            label: "Finish today's homework",
+            isComplete: false,
+        },
+        {
+            id: 1,
+            label: 'Write down some idea',
+            isComplete: true,
+        },
+        {
+            id: 2,
+            label: 'Design homepage much better',
+            isComplete: false,
+        },
+    ],
+};
 
 export const ADMIN_UID = 'a9Gv9xjzk0UXkQYpLpNat7DqbMe2';
 export const googleIcon =
@@ -34,5 +48,33 @@ export const googleIcon =
 export const fbIcon =
     'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg';
 
-export const noPhoto =
-    'https://camo.githubusercontent.com/5ca3b818c19ac4d415c3c5d1b71ca172458216da6c9d0c687f42552c5d53de9d/68747470733a2f2f7777772e64726f70626f782e636f6d2f732f72616d336b6566393561646c646f702f706f6d6f646f726f2e706e673f7261773d31';
+export const initUserData = {
+    //Timer and task data here
+    timer: {
+        mode: POMODORO,
+        start: false,
+        session: 1,
+        countBreaks: 0,
+        music: true,
+        autoPomodoros: true,
+        longBreakInterval: 4,
+        modes: {
+            [POMODORO]: {
+                id: POMODORO,
+                label: 'Pomodoro',
+                time: 45,
+            },
+            [SHORT_BREAK]: {
+                id: SHORT_BREAK,
+                label: 'Short Break',
+                time: 5,
+            },
+            [LONG_BREAK]: {
+                id: LONG_BREAK,
+                label: 'Long Break',
+                time: 10,
+            },
+        },
+    },
+    tasks: [],
+};

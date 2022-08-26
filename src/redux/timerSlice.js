@@ -4,9 +4,9 @@ import { POMODORO, SHORT_BREAK, LONG_BREAK } from '../Utils/constant';
 const initialState = {
     mode: POMODORO,
     start: false,
+    music: true,
     session: 1,
     countBreaks: 0,
-    music: true,
     autoPomodoros: true,
     longBreakInterval: 4,
     modes: {
@@ -32,6 +32,18 @@ const timerSlice = createSlice({
     name: 'timer',
     initialState: initialState,
     reducers: {
+        updateData: (state, action) => {
+            const { modes, music, autoPomodoros, longBreakInterval } =
+                action.payload;
+
+            state.modes[POMODORO] = modes[POMODORO];
+            state.modes[SHORT_BREAK] = modes[SHORT_BREAK];
+            state.modes[LONG_BREAK] = modes[LONG_BREAK];
+            state.music = music;
+            state.autoPomodoros = autoPomodoros;
+            state.longBreakInterval = longBreakInterval;
+        },
+
         onStart: (state) => {
             state.start = !state.start;
         },
@@ -47,7 +59,7 @@ const timerSlice = createSlice({
             state.session += 1;
         },
 
-        // Settings
+        // Settings for anonymous user
         updateTime: (state, action) => {
             const { mode, time } = action.payload;
             state.modes[mode].time = time;
@@ -55,7 +67,7 @@ const timerSlice = createSlice({
         setLongBreakInterval: (state, action) => {
             state.longBreakInterval = action.payload;
         },
-        toggleMusic: (state) => {
+        toggleAutoMusic: (state) => {
             state.music = !state.music;
         },
 
@@ -66,6 +78,7 @@ const timerSlice = createSlice({
 });
 
 export const {
+    updateData,
     onStart,
     changeKeyTimer,
     setMode,
@@ -74,7 +87,7 @@ export const {
     updateTime,
     setLongBreakInterval,
     toggleAutoPomodoros,
-    toggleMusic,
+    toggleAutoMusic,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

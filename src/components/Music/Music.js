@@ -9,7 +9,6 @@ import {
     handleNextSong,
 } from '../../redux/musicSlice';
 import Subtitle from './Subtitle';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Controlers from './Controlers';
 import Volume from './Volume';
 import Playlist from './Playlist';
@@ -17,18 +16,17 @@ import Playlist from './Playlist';
 // Fix re-render this component
 const Music = () => {
     const dispatch = useDispatch();
-    const { isPlaying, muted, volume, loop, currentIndex, currentSong, songs } =
-        useSelector((state) => state.music);
-    const nowPlaying = songs[currentIndex];
+    const { isPlaying, muted, volume, loop, currentSong } = useSelector(
+        (state) => state.music,
+    );
 
     const playRef = useRef(null);
-    // console.log('Current song:', nowPlaying)
 
     return (
         <>
             <Playlist />
             <div
-                className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center pb-5 pb-md-2 pt-2 text-light shadow-lg"
+                className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center pb-4 pb-md-3 pb-xl-2 pt-2 text-light shadow-lg"
                 style={{
                     bottom: '0',
                     left: '0',
@@ -43,17 +41,13 @@ const Music = () => {
                         maxWidth: '1300px',
                     }}
                 >
-                    <div className="col-12 col-md-4 col-lg-4 pe-4">
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div>
+                    <div className="col-12 col-md-4 col-lg-4 pe-4 position-relative">
+                        <div className="d-flex justify-content-sm-between justify-content-md-start align-items-center">
+                            <div className="d-flex align-items-center">
                                 <img
-                                    src={
-                                        currentSong
-                                            ? currentSong?.image_url
-                                            : nowPlaying?.image_url
-                                    }
+                                    src={currentSong.image_url}
                                     alt=""
-                                    className="rounded-1"
+                                    className="rounded-1 "
                                     style={{
                                         height: '50px',
                                         width: '50px',
@@ -61,50 +55,25 @@ const Music = () => {
                                     }}
                                 />
                             </div>
+                            <Subtitle song={currentSong} />
 
-                            <Subtitle
-                                song={currentSong ? currentSong : nowPlaying}
-                            />
-                            <div className="d-flex gap-3 align-items-center">
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip id="Favorite">
-                                            Favorite song
-                                        </Tooltip>
-                                    }
+                            <div className="d-flex gap-3 align-items-center ps-3">
+                                <div>
+                                    <i className="bi bi-heart-fill fs-5"></i>
+                                </div>
+
+                                <div
+                                    onClick={() => dispatch(toggleIsPlaylist())}
+                                    role="button"
                                 >
-                                    <i
-                                        className="bi bi-heart-fill"
-                                        style={{ fontSize: '12px' }}
-                                    ></i>
-                                </OverlayTrigger>
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip id="Favorite">
-                                            Playlist
-                                        </Tooltip>
-                                    }
-                                >
-                                    <div
-                                        onClick={() =>
-                                            dispatch(toggleIsPlaylist())
-                                        }
-                                        role="button"
-                                    >
-                                        <i
-                                            className="bi bi-music-note-list "
-                                            style={{ fontSize: '18px' }}
-                                        />
-                                    </div>
-                                </OverlayTrigger>
+                                    <i className="bi bi-music-note-list fs-3" />
+                                </div>
                             </div>
                         </div>
                     </div>
                     <ReactPlayer
                         ref={playRef}
-                        url={currentSong ? currentSong?.link : nowPlaying?.link}
+                        url={currentSong?.link}
                         playing={isPlaying}
                         onEnded={!loop ? () => dispatch(handleNextSong()) : {}}
                         loop={loop}
