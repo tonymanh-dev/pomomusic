@@ -39,6 +39,14 @@ const musicSlice = createSlice({
         togglePlaying: (state) => {
             state.isPlaying = !state.isPlaying;
         },
+
+        onPlay: (state) => {
+            state.isPlaying = true;
+        },
+        onStop: (state) => {
+            state.isPlaying = false;
+        },
+
         handleDuration: (state, action) => {
             state.duration = action.payload;
         },
@@ -118,6 +126,8 @@ export const {
     handleDuration,
     handleProgress,
     togglePlaying,
+    onPlay,
+    onStop,
 
     toggleMute,
     handleVolumeChange,

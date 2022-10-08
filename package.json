@@ -12,6 +12,7 @@
         "axios": "^0.27.2",
         "bootstrap": "^5.2.0",
         "bootstrap-icons": "^1.9.1",
+        "dotenv": "^16.0.3",
         "firebase": "^9.9.2",
         "firebase-admin": "^9.11.1",
         "html-react-parser": "^3.0.1",

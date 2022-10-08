@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePlaylist, handlePickSong } from '../../redux/musicSlice';
 
-const Playlist = () => {
+const Playlist = ({ btnPlaylist }) => {
     const [songInput, setSongInput] = useState('');
 
     const dispatch = useDispatch();
-    const { currentSong, songs, isPlaylist } = useSelector(
+    const { isPlaylist, currentSong, songs } = useSelector(
         (state) => state.music,
     );
+
+    const playListRef = useRef(null);
 
     const handleSearch = () => {
         // Sorting name alphabetically
@@ -23,8 +25,29 @@ const Playlist = () => {
         );
     };
 
+    const onClickOutside = useCallback(() => {
+        dispatch(closePlaylist());
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                playListRef.current &&
+                !playListRef.current.contains(event.target) &&
+                !btnPlaylist
+            ) {
+                console.log('d');
+                onClickOutside();
+            }
+        };
+        document.addEventListener('click', handleClickOutside, true);
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        };
+    }, [onClickOutside, btnPlaylist]);
+
     return (
-        <div className="position-ralative ">
+        <div ref={playListRef} className="position-ralative ">
             <div
                 className="position-fixed h-100 ps-2  d-flex flex-column align-items-center align-items-md-start shadow-lg"
                 style={{
@@ -84,7 +107,7 @@ const Playlist = () => {
                         {handleSearch().map((item) => (
                             <li
                                 key={item.id}
-                                className="list-group-item-action w-100 py-2 px-3 d-flex align-items-center rounded-1"
+                                className="list-group-item-action w-100 py-2 mb-1 px-3 d-flex align-items-center rounded-1"
                                 onClick={() => dispatch(handlePickSong(item))}
                                 style={{
                                     backgroundColor:

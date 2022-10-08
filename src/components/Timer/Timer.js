@@ -15,8 +15,7 @@ import {
     onStart,
     handleCountToLongBreak,
 } from '../../redux/timerSlice';
-import { togglePlaying } from '../../redux/musicSlice';
-import { Spinner } from 'react-bootstrap';
+import { togglePlaying, onPlay, onStop } from '../../redux/musicSlice';
 
 const Timer = () => {
     const dispatch = useDispatch();
@@ -29,14 +28,23 @@ const Timer = () => {
         longBreakInterval,
         countBreaks,
     } = useSelector((state) => state.timer);
-    const { isPlaying } = useSelector((state) => state.music);
 
     const time = modes[mode]?.time * 60;
 
+    // Handle play timer and music
     const handleStart = () => {
         dispatch(onStart());
-        if (!isPlaying && music) {
-            dispatch(togglePlaying());
+        if (music) {
+            switch (start) {
+                case true:
+                    dispatch(onStop());
+                    break;
+                case false:
+                    dispatch(onPlay());
+                    break;
+                default:
+                    dispatch(togglePlaying());
+            }
         }
     };
 
@@ -137,7 +145,7 @@ const Timer = () => {
                     <div className="d-flex justify-content-center">
                         <button
                             className="btn bg-light text-primary rounded-pill fw-bold"
-                            style={{ fontSize: '16px', padding: '12px 28px' }}
+                            style={{ fontSize: '16px', padding: '12px 50px' }}
                             onClick={handleStart}
                         >
                             {start ? 'STOP' : 'START'}

@@ -4,14 +4,13 @@ import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'AIzaSyAU8d1feyG3inCYF9MZXuANsubZi3HRe6k',
+    apiKey: process.env.REACT_APP_API_KEY,
     authDomain: 'pomomusic-65e12.firebaseapp.com',
-    databaseURL:
-        'https://pomomusic-65e12-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL: process.env.REACT_APP_DATABASE_URL,
     projectId: 'pomomusic-65e12',
     storageBucket: 'pomomusic-65e12.appspot.com',
     messagingSenderId: '834621943407',
-    appId: '1:834621943407:web:b29ca5666e82cd5d1ea79a',
+    appId: process.env.REACT_APP_ID,
 };
 
 // Initialize Firebase

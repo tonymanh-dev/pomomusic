@@ -68,7 +68,7 @@ const Navbar = () => {
 
                     {pathname === '/' && (
                         <div className="collapse navbar-collapse  me-4">
-                            <ul className="navbar-nav ms-auto align-items-center">
+                            <ul className="navbar-nav ms-auto align-items-center gap-3">
                                 {links.map((link) => (
                                     <li key={link.to} className="nav-item">
                                         <a

@@ -10,7 +10,7 @@ const Footer = () => {
                 <button className="btn border-0 ">
                     <a
                         target="_blank"
-                        href="https://twitter.com/Manh_Eng"
+                        href="https://twitter.com/manh_tvm"
                         rel="noreferrer noopener"
                         className="fs-2 "
                     >
@@ -21,7 +21,7 @@ const Footer = () => {
                     <a
                         target="_blank"
                         rel="noreferrer noopener"
-                        href="https://github.com/Manhmin"
+                        href="https://github.com/tonymanh-dev"
                         className="fs-2 "
                     >
                         <i className="bi bi-github"></i>
@@ -29,7 +29,7 @@ const Footer = () => {
                 </button>
                 <button className="btn border-0 ">
                     <a
-                        href="https://www.linkedin.com/in/tran-van-manh-81675ba5/"
+                        href="https://www.linkedin.com/in/tonymanh"
                         target="_blank"
                         rel="noreferrer noopener"
                         className="fs-2 "
@@ -43,7 +43,7 @@ const Footer = () => {
                 <p className="fs-5 ">
                     Built by{' '}
                     <a
-                        href="https://github.com/Manhmin"
+                        href="https://twitter.com/manh_tvm"
                         target="_blank"
                         rel="noreferrer noopener"
                         className="text-decoration-none fs-5 fw-bold"

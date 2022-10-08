@@ -19,12 +19,12 @@ const Music = () => {
     const { isPlaying, muted, volume, loop, currentSong } = useSelector(
         (state) => state.music,
     );
-
     const playRef = useRef(null);
+    const btnPlaylist = useRef(null);
 
     return (
         <>
-            <Playlist />
+            <Playlist btnPlaylist={btnPlaylist.current} />
             <div
                 className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center pb-4 pb-md-3 pb-xl-2 pt-2 text-light shadow-lg"
                 style={{
@@ -63,6 +63,7 @@ const Music = () => {
                                 </div>
 
                                 <div
+                                    ref={btnPlaylist}
                                     onClick={() => dispatch(toggleIsPlaylist())}
                                     role="button"
                                 >
