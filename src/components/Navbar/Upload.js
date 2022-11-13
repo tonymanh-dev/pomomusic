@@ -56,7 +56,6 @@ const Upload = () => {
                 autoClose: 1000,
             });
         } catch (error) {
-            console.log(error.message);
             toast.error('Upload failed, try again !');
         }
 
@@ -83,14 +82,14 @@ const Upload = () => {
             style={{ paddingTop: '80px', maxWidth: '720px' }}
         >
             <div className=" text-center">
-                <div className="d-flex justify-content-between align-items-center pb-3 border-bottom">
+                <div className="d-flex justify-content-between align-items-center border-bottom pb-3">
                     <h2 className="fs-3 fw-bold text-primary mb-0">
                         <i className="bi bi-cloud-arrow-up-fill me-2"></i>
                         Submit music
                     </h2>
                     <button
                         type="button"
-                        className="btn border-0 fw-bold  fs-4 text-secondary"
+                        className="btn fw-bold fs-4  text-secondary border-0"
                         onClick={() => navigate('/myplaylist')}
                     >
                         <i className="bi bi-music-note-list me-1 fs-4"></i>
@@ -100,7 +99,7 @@ const Upload = () => {
                 <div className="my-3 text-start">
                     <Label label="Name" />
                     <input
-                        className="form-control fs-4 border-0 rounded-1"
+                        className="form-control fs-4 rounded-1 border-0"
                         style={{ padding: '12px', backgroundColor: '#f0f2f5' }}
                         type="text"
                         placeholder="This is a playlist"
@@ -112,7 +111,7 @@ const Upload = () => {
                 <div className="mb-3 text-start">
                     <Label label="Type" />
                     <input
-                        className="form-control fs-4 border-0 rounded-1"
+                        className="form-control fs-4 rounded-1 border-0"
                         style={{ padding: '12px', backgroundColor: '#f0f2f5' }}
                         type="text"
                         placeholder="US-UK, Pop, Lofi..."
@@ -125,7 +124,7 @@ const Upload = () => {
                     <Label label="Song (Youtube URL)" />
 
                     <input
-                        className="form-control fs-4 border-0 rounded-1"
+                        className="form-control fs-4 rounded-1 border-0"
                         style={{ padding: '12px', backgroundColor: '#f0f2f5' }}
                         type="text"
                         placeholder="Example: https://www.youtube.com/music"
@@ -137,7 +136,7 @@ const Upload = () => {
                 <div className="mb-3 text-start">
                     <Label label="Image (URL)" />
                     <input
-                        className="form-control fs-4 border-0 rounded-1"
+                        className="form-control fs-4 rounded-1 border-0"
                         style={{ padding: '12px', backgroundColor: '#f0f2f5' }}
                         type="text"
                         placeholder="Example: https://google.com/photo"
@@ -149,7 +148,7 @@ const Upload = () => {
 
                 <button
                     type="button"
-                    className="btn btn-primary border-0 mt-3 w-100 p-3 fs-4 fw-bold rounded-5 text-light"
+                    className="btn btn-primary w-100 fs-4 fw-bold rounded-5 text-light mt-3 border-0 p-3"
                     onClick={handleValidate}
                 >
                     SUBMIT

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { closePlaylist, handlePickSong } from '../../redux/musicSlice';
 
-const Playlist = ({ btnPlaylist }) => {
+const Playlist = ({ btnRef }) => {
     const [songInput, setSongInput] = useState('');
 
     const dispatch = useDispatch();
@@ -25,18 +25,16 @@ const Playlist = ({ btnPlaylist }) => {
         );
     };
 
-    const onClickOutside = useCallback(() => {
+    const onClickOutside = () => {
         dispatch(closePlaylist());
-    }, []);
+    };
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (
                 playListRef.current &&
-                !playListRef.current.contains(event.target) &&
-                !btnPlaylist
+                !playListRef.current.contains(event.target)
             ) {
-                console.log('d');
                 onClickOutside();
             }
         };
@@ -44,7 +42,7 @@ const Playlist = ({ btnPlaylist }) => {
         return () => {
             document.removeEventListener('click', handleClickOutside, true);
         };
-    }, [onClickOutside, btnPlaylist]);
+    });
 
     return (
         <div ref={playListRef} className="position-ralative ">
@@ -62,17 +60,17 @@ const Playlist = ({ btnPlaylist }) => {
                         'linear-gradient(to left bottom, #f4664c, #f66c48, #f77244, #f87941, #f97f3d)',
                 }}
             >
-                <div className="d-flex justify-content-between alight-items-center w-100 pe-3 pt-3 ps-3 pb-2 text-light">
+                <div className="d-flex justify-content-between alight-items-center w-100 pe-3 ps-3 text-light pt-3 pb-2">
                     <h2 className="fs-3 fw-bold">Playlist</h2>
                     <span
-                        className="px-3 rounded-5 "
+                        className="rounded-5 px-3 "
                         role="button"
                         onClick={() => dispatch(closePlaylist())}
                     >
                         <i className="bi bi-x-lg fs-3"></i>
                     </span>
                 </div>
-                <div className="mb-3 w-100 px-3 position-relative ">
+                <div className="w-100 position-relative mb-3 px-3 ">
                     <div className="pe-3">
                         <input
                             type="text"
@@ -92,7 +90,7 @@ const Playlist = ({ btnPlaylist }) => {
                                 height: '100%',
                                 position: 'absolute',
                             }}
-                            className="btn border-0 rounded-4 fs-4 text-secondary"
+                            className="btn rounded-4 fs-4 text-secondary border-0"
                         >
                             <i className="bi bi-search "></i>
                         </button>
@@ -107,7 +105,7 @@ const Playlist = ({ btnPlaylist }) => {
                         {handleSearch().map((item) => (
                             <li
                                 key={item.id}
-                                className="list-group-item-action w-100 py-2 mb-1 px-3 d-flex align-items-center rounded-1"
+                                className="list-group-item-action w-100 d-flex align-items-center rounded-1 mb-1 py-2 px-3"
                                 onClick={() => dispatch(handlePickSong(item))}
                                 style={{
                                     backgroundColor:

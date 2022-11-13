@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserProvider } from './Context/UserContext';
 
-import Navbar from './components/Navbar/Navbar';
+import Navbar from './components/Navbar';
 import Upload from './components/Navbar/Upload';
 import MyPlaylist from './components/Navbar/MyPlaylist';
 import Login from './components/Navbar/Login';

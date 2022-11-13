@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import ModalSettings from '../Settings/ModalSettings';
+import Settings from '../Settings';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import Spinner from '../Spinner';
@@ -45,13 +45,13 @@ const Navbar = () => {
                 style={{ height: '54px', zIndex: '10' }}
             >
                 <div
-                    className="container-sm d-flex justify-content-space-between px-4 px-md-5"
+                    className="container-sm d-flex justify-content-space-between px-md-5 px-4"
                     style={{ maxWidth: '800px' }}
                 >
                     <div className="d-flex d-md-none">
                         <button
                             type="button"
-                            className="btn border-0 px-0 text-light fs-3 text me-0"
+                            className="btn text-light fs-3 text me-0 border-0 px-0"
                             onClick={handleShowModal}
                         >
                             <i className="bi bi-gear-fill"></i>
@@ -60,6 +60,13 @@ const Navbar = () => {
                     <div>
                         <Link
                             to="/"
+                            onClick={() => {
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'smooth',
+                                });
+                            }}
                             className="text-light navbar-brand fs-3 text fw-bold"
                         >
                             PomoMusic
@@ -82,7 +89,7 @@ const Navbar = () => {
                                 <li className="nav-item">
                                     <button
                                         type="button"
-                                        className="btn border-0 px-2 text-light fs-4 text me-0"
+                                        className="btn text-light fs-4 text me-0 border-0 px-2"
                                         onClick={handleShowModal}
                                     >
                                         Settings
@@ -105,7 +112,7 @@ const Navbar = () => {
                                     >
                                         <button
                                             type="button"
-                                            className="border-0 bg-white fs-5 fw-bold"
+                                            className="fs-5 fw-bold border-0 bg-white"
                                             onClick={() => {
                                                 navigate('/myplaylist');
                                             }}
@@ -116,7 +123,7 @@ const Navbar = () => {
                                         </button>
                                         <button
                                             type="button"
-                                            className="border-0 bg-white fs-5 fw-bold"
+                                            className="fs-5 fw-bold border-0 bg-white"
                                             onClick={() => {
                                                 navigate('/uploadmusic');
                                             }}
@@ -127,7 +134,7 @@ const Navbar = () => {
                                         </button>
                                         <button
                                             type="button"
-                                            className="border-0 border-top bg-white fs-5 pt-2 fw-bold w-100 text-start"
+                                            className="border-top fs-5 fw-bold w-100 border-0 bg-white pt-2 text-start"
                                             onClick={handleLogout}
                                         >
                                             <span className="text-secondary">
@@ -139,7 +146,7 @@ const Navbar = () => {
                             >
                                 <button
                                     type="button"
-                                    className="btn py-0 px-0 d-flex align-items-center rounded-pill border-0"
+                                    className="btn d-flex align-items-center rounded-pill border-0 py-0 px-0"
                                 >
                                     {user.image_url ? (
                                         <img
@@ -147,7 +154,7 @@ const Navbar = () => {
                                             alt=""
                                             width="28"
                                             height="28"
-                                            className="d-inline-block align-text-top border rounded-circle"
+                                            className="d-inline-block rounded-circle border align-text-top"
                                         />
                                     ) : (
                                         <span className="fs-2 text-light">
@@ -171,7 +178,7 @@ const Navbar = () => {
                         <div>
                             <button
                                 type="button"
-                                className="btn py-0 px-0 d-flex align-items-center rounded-pill text-light fs-2 border-0"
+                                className="btn d-flex align-items-center rounded-pill text-light fs-2 border-0 py-0 px-0"
                                 onClick={() => navigate('/login')}
                             >
                                 <i className="bi bi-person-circle"></i>
@@ -180,10 +187,7 @@ const Navbar = () => {
                     )}
                 </div>
                 {isShow && (
-                    <ModalSettings
-                        closeModal={handleCloseModal}
-                        isShow={isShow}
-                    />
+                    <Settings closeModal={handleCloseModal} isShow={isShow} />
                 )}
             </nav>
         </>

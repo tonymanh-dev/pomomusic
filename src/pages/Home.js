@@ -1,7 +1,7 @@
 import React from 'react';
-import Timer from '../components/Timer/Timer';
-import Tasks from '../components/Tasks/Tasks';
-import Music from '../components/Music/Music';
+import Timer from '../components/Timer';
+import Tasks from '../components/Tasks';
+import Music from '../components/Music';
 import About from '../components/About';
 
 const Home = () => {

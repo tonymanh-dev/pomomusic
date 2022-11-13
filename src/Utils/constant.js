@@ -42,7 +42,7 @@ export const dummyTasks = {
     ],
 };
 
-export const ADMIN_UID = 'a9Gv9xjzk0UXkQYpLpNat7DqbMe2';
+export const ADMIN_UID = process.env.REACT_APP_ADMIN_UID;
 export const googleIcon =
     'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg';
 export const fbIcon =
@@ -58,6 +58,7 @@ export const initUserData = {
         music: true,
         autoPomodoros: true,
         longBreakInterval: 4,
+        alarmSound: true,
         modes: {
             [POMODORO]: {
                 id: POMODORO,

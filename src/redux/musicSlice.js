@@ -40,10 +40,12 @@ const musicSlice = createSlice({
             state.isPlaying = !state.isPlaying;
         },
 
-        onPlay: (state) => {
+        onPlayMusic: (state) => {
             state.isPlaying = true;
+            // setTimeout(() => {
+            // }, 2000);
         },
-        onStop: (state) => {
+        onStopMusic: (state) => {
             state.isPlaying = false;
         },
 
@@ -126,8 +128,8 @@ export const {
     handleDuration,
     handleProgress,
     togglePlaying,
-    onPlay,
-    onStop,
+    onPlayMusic,
+    onStopMusic,
 
     toggleMute,
     handleVolumeChange,

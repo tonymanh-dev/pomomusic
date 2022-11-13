@@ -41,7 +41,6 @@ const MyPlaylist = () => {
                 autoClose: 1000,
             });
         } catch (error) {
-            console.log(error.message);
             toast.error('Somthing went wrong. Try again 🤪');
         }
     };
@@ -59,7 +58,7 @@ const MyPlaylist = () => {
                     </h2>
                     <button
                         type="button"
-                        className="btn border-0 fw-bold  fs-4 text-secondary"
+                        className="btn fw-bold fs-4  text-secondary border-0"
                         onClick={() => navigate('/uploadmusic')}
                     >
                         <i className="bi bi-plus-circle me-1 fs-4"></i>
@@ -67,7 +66,7 @@ const MyPlaylist = () => {
                     </button>
                 </div>
 
-                <div className="mb-4 w-100 position-relative">
+                <div className="w-100 position-relative mb-4">
                     <input
                         type="text"
                         className="form-control ps-3 fs-4 rounded-pill border-0 "
@@ -86,7 +85,7 @@ const MyPlaylist = () => {
                             height: '100%',
                             position: 'absolute',
                         }}
-                        className="btn border-0 rounded-4 fs-3 text-secondary"
+                        className="btn rounded-4 fs-3 text-secondary border-0"
                     >
                         <i className="bi bi-search "></i>
                     </button>
@@ -96,7 +95,7 @@ const MyPlaylist = () => {
                         {handleSearch().map((item) => (
                             <li
                                 key={item.id}
-                                className="list-group-item-action border-0  py-2 px-0 d-flex align-items-center justify-content-between "
+                                className="list-group-item-action d-flex  align-items-center justify-content-between border-0 py-2 px-0 "
                             >
                                 <div className="d-flex align-items-center">
                                     <div className="me-2">
@@ -112,11 +111,11 @@ const MyPlaylist = () => {
                                                 alt=""
                                             />
                                         ) : (
-                                            <i className="bi bi-card-image fs-1 text-muted opacity-25 me-2"></i>
+                                            <i className="bi bi-card-image fs-1 text-muted me-2 opacity-25"></i>
                                         )}
                                     </div>
                                     <div
-                                        className="d-flex flex-column text-start text-dark "
+                                        className="d-flex flex-column text-dark text-start "
                                         style={{ minWidth: '0' }}
                                     >
                                         <Tippy
@@ -147,11 +146,10 @@ const MyPlaylist = () => {
                                             type="button"
                                             className="btn border-0"
                                             onClick={() => {
-                                                console.log(item);
                                                 handleDelete(item.id);
                                             }}
                                         >
-                                            <span className="py-2 ps-2 fs-5 text-primary">
+                                            <span className="ps-2 fs-5 text-primary py-2">
                                                 <i className="bi bi-trash"></i>
                                             </span>
                                         </button>

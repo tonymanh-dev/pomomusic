@@ -2,6 +2,7 @@
 import React, { useCallback } from 'react';
 import Button from '../Button/Button';
 import CountdownTimer from './CountdownTimer';
+import { useCountdown } from 'react-countdown-circle-timer';
 import {
     LONG_BREAK,
     modeBtn,
@@ -15,13 +16,23 @@ import {
     onStart,
     handleCountToLongBreak,
 } from '../../redux/timerSlice';
-import { togglePlaying, onPlay, onStop } from '../../redux/musicSlice';
+import {
+    togglePlaying,
+    onPlayMusic,
+    onStopMusic,
+} from '../../redux/musicSlice';
+import {
+    handlePlayStartSound,
+    handlePauseEndSound,
+    endAudio,
+} from '../../Utils/helper';
 
 const Timer = () => {
     const dispatch = useDispatch();
     const {
         mode,
         modes,
+        alarmSound,
         start,
         autoPomodoros,
         music,
@@ -31,16 +42,33 @@ const Timer = () => {
 
     const time = modes[mode]?.time * 60;
 
+    const handlePlayMusic = () => {
+        setTimeout(() => {
+            dispatch(onPlayMusic());
+        }, 1000);
+    };
+
     // Handle play timer and music
     const handleStart = () => {
         dispatch(onStart());
-        if (music) {
+
+        if (!endAudio.paused) {
+            endAudio.pause();
+        }
+
+        if (!start && alarmSound && mode === POMODORO && time) {
+            // Handle play start sound
+            handlePlayStartSound();
+        }
+
+        //
+        if (music && mode === POMODORO) {
             switch (start) {
                 case true:
-                    dispatch(onStop());
+                    dispatch(onStopMusic());
                     break;
                 case false:
-                    dispatch(onPlay());
+                    handlePlayMusic();
                     break;
                 default:
                     dispatch(togglePlaying());
@@ -56,19 +84,20 @@ const Timer = () => {
     );
 
     // Auto switch to mode.
-    const switchToMode = useCallback(
-        (id) => {
-            dispatch(onStart());
-            onSwitch(id);
+    const switchToMode = (id) => {
+        dispatch(onStart());
+        onSwitch(id);
 
-            if (autoPomodoros) {
-                setTimeout(() => {
-                    dispatch(onStart());
-                }, 1000);
-            }
-        },
-        [onSwitch, autoPomodoros, dispatch],
-    );
+        if (mode !== POMODORO && alarmSound) {
+            handlePlayStartSound();
+        }
+
+        if (autoPomodoros) {
+            setTimeout(() => {
+                dispatch(onStart());
+            }, 1000);
+        }
+    };
 
     // Handle next to mode
     const handleSwitchMode = (id) => {
@@ -80,34 +109,54 @@ const Timer = () => {
             allowed = confirm(
                 'Pomodoro is still runing. Are you want to switch?',
             );
-            allowed ? onSwitch(id) : dispatch(onStart());
+
+            if (allowed) {
+                onSwitch(id);
+                dispatch(onStopMusic());
+            } else {
+                dispatch(onStart());
+            }
         } else onSwitch(id);
     };
 
     // Handle switch to mode
-    const handlePromodoros = useCallback(() => {
+    const handleOnComplete = () => {
+        if (alarmSound) {
+            handlePauseEndSound();
+        }
+
         switch (mode) {
             case LONG_BREAK:
             case SHORT_BREAK:
                 switchToMode(POMODORO);
+
+                handlePlayMusic();
                 dispatch(incrementSession());
+                window.document.title = 'Time to Work 👨🏻‍💻';
                 if (mode === SHORT_BREAK) dispatch(handleCountToLongBreak());
                 break;
             default:
+                window.document.title = 'Time to Break 🕺';
+
+                //Stop music when switch to Short and Long break
+                dispatch(onStopMusic());
+
                 if (countBreaks < longBreakInterval) {
                     switchToMode(SHORT_BREAK);
                 } else {
                     switchToMode(LONG_BREAK);
+                    // dispatch(onStopMusic());
+
                     dispatch(handleCountToLongBreak('reset'));
                 }
         }
-    }, [mode, longBreakInterval, switchToMode, dispatch, countBreaks]);
+    };
 
     return (
         <>
             <div className="d-flex justify-content-center ">
                 <div
-                    className="card text-light border-0 justify-content-around align-items-center"
+                    className="card text-light justify-content-around align-items-center border-0"
                     style={{
                         background: 'transparent',
                         height: '440px',
@@ -115,7 +164,7 @@ const Timer = () => {
                     }}
                 >
                     <div
-                        className="d-flex justify-content-center gap-4 p-2  container rounded-5 "
+                        className="d-flex justify-content-center rounded-5 container  gap-4 p-2 "
                         style={{
                             background: 'rgba(255,255,255, 0.1)',
                         }}
@@ -135,10 +184,13 @@ const Timer = () => {
                         style={{ fontSize: '80px' }}
                     >
                         <CountdownTimer
+                            start={start}
+                            mode={mode}
                             timer={time}
                             keyTimer={mode}
                             isPlaying={start}
-                            handlePromodoro={handlePromodoros}
+                            alarmSound={alarmSound}
+                            onComplete={handleOnComplete}
                         />
                     </div>
 

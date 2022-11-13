@@ -20,13 +20,13 @@ const Music = () => {
         (state) => state.music,
     );
     const playRef = useRef(null);
-    const btnPlaylist = useRef(null);
+    const btnRef = useRef(null);
 
     return (
         <>
-            <Playlist btnPlaylist={btnPlaylist.current} />
+            <Playlist btnRef={btnRef} />
             <div
-                className="container-fluid position-fixed h-auto w-100 d-flex justify-content-center pb-4 pb-md-3 pb-xl-2 pt-2 text-light shadow-lg"
+                className="container-fluid position-fixed w-100 d-flex justify-content-center pb-md-3 pb-xl-2 text-light h-auto pb-4 pt-2 shadow-lg"
                 style={{
                     bottom: '0',
                     left: '0',
@@ -57,15 +57,15 @@ const Music = () => {
                             </div>
                             <Subtitle song={currentSong} />
 
-                            <div className="d-flex gap-3 align-items-center ps-3">
+                            <div className="d-flex align-items-center ps-3 gap-3">
                                 <div>
                                     <i className="bi bi-heart-fill fs-5"></i>
                                 </div>
 
                                 <div
-                                    ref={btnPlaylist}
-                                    onClick={() => dispatch(toggleIsPlaylist())}
+                                    ref={btnRef}
                                     role="button"
+                                    onClick={() => dispatch(toggleIsPlaylist())}
                                 >
                                     <i className="bi bi-music-note-list fs-3" />
                                 </div>
@@ -91,7 +91,7 @@ const Music = () => {
                             },
                         }}
                     />
-                    <div className=" col-12 col-md-4 col-lg-4 px-4 px-md-0">
+                    <div className=" col-12 col-md-4 col-lg-4 px-md-0 px-4">
                         <Controlers playRef={playRef} />
                     </div>
                     <div className="d-none d-md-flex col-md-4 col-lg-4 justify-content-end ps-4">

@@ -5,7 +5,8 @@ const initialState = {
     mode: POMODORO,
     start: false,
     music: true,
-    session: 1,
+    alarmSound: true,
+    session: 0,
     countBreaks: 0,
     autoPomodoros: true,
     longBreakInterval: 4,
@@ -74,6 +75,9 @@ const timerSlice = createSlice({
         toggleAutoPomodoros: (state) => {
             state.autoPomodoros = !state.autoPomodoros;
         },
+        toggleAlarmSound: (state) => {
+            state.alarmSound = !state.alarmSound;
+        },
     },
 });
 
@@ -88,6 +92,7 @@ export const {
     setLongBreakInterval,
     toggleAutoPomodoros,
     toggleAutoMusic,
+    toggleAlarmSound,
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

@@ -21,7 +21,7 @@ import { updatePlaylist } from '../redux/musicSlice';
 import { updateData } from '../redux/timerSlice';
 import { updateTasks } from '../redux/taskSlice';
 import { ADMIN_UID, initUserData } from '../Utils/constant';
-// require('dotenv').config();
+
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -109,7 +109,7 @@ const UserProvider = ({ children }) => {
                     setUser(user);
                     navigate('/');
                 } catch (error) {
-                    setInvalid(error.message);
+                    setInvalid('Email or password incorrect!');
                 }
                 setLoginByEmail({
                     email: '',

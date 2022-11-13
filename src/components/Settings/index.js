@@ -9,6 +9,7 @@ import {
     setLongBreakInterval,
     toggleAutoPomodoros,
     toggleAutoMusic,
+    toggleAlarmSound,
 } from '../../redux/timerSlice';
 
 import { Input } from './Input';
@@ -23,19 +24,16 @@ import Tippy from '@tippyjs/react';
 const ModalSettings = ({ closeModal, isShow }) => {
     const { user } = useContext(UserContext);
     const dispatch = useDispatch();
-    const { modes, music, autoPomodoros, longBreakInterval } = useSelector(
-        (state) => state.timer,
-    );
+    const { modes, alarmSound, music, autoPomodoros, longBreakInterval } =
+        useSelector((state) => state.timer);
 
-    // Handle update setting to firebase
+    // Handle update data setting to firebase
     const handelUpdateSetting = async (payload) => {
         if (!user) return;
         const userRef = doc(db, 'users', user.uid);
         try {
             await updateDoc(userRef, payload);
-        } catch (error) {
-            console.log(error.message);
-        }
+        } catch (error) {}
     };
 
     // Handle update timer
@@ -78,7 +76,7 @@ const ModalSettings = ({ closeModal, isShow }) => {
     const handleAutoPomodoros = () => {
         if (user) {
             handelUpdateSetting({
-                'timer.autoPomodoros': !music,
+                'timer.autoPomodoros': !autoPomodoros,
             });
         } else {
             dispatch(toggleAutoPomodoros());
@@ -93,6 +91,16 @@ const ModalSettings = ({ closeModal, isShow }) => {
         } else {
             dispatch(setLongBreakInterval(value));
         }
+    };
+
+    const handleAlarmSound = () => {
+        if (user) {
+            handelUpdateSetting({
+                'timer.alarmSound': !alarmSound,
+            });
+        } else {
+        }
+        dispatch(toggleAlarmSound());
     };
 
     return (
@@ -138,11 +146,19 @@ const ModalSettings = ({ closeModal, isShow }) => {
                                     )}
                                 </div>
                             </div>
+
                             <Item>
                                 <Label children="Auto play music when started?" />
                                 <Toggle
                                     on={music}
                                     onClick={handleSettingMusic}
+                                />
+                            </Item>
+                            <Item>
+                                <Label children="Alarm sound" />
+                                <Toggle
+                                    on={alarmSound}
+                                    onClick={handleAlarmSound}
                                 />
                             </Item>
 
@@ -170,7 +186,7 @@ const ModalSettings = ({ closeModal, isShow }) => {
                         </div>
                     </Modal.Body>
                     <Modal.Footer
-                        className="border-0 px-0 pb-0 d-flex "
+                        className="d-flex border-0 px-0 pb-0 "
                         style={{
                             justifyContent: user ? 'end' : 'space-between',
                         }}
@@ -185,7 +201,7 @@ const ModalSettings = ({ closeModal, isShow }) => {
                         )}
                         <Button
                             variant="primary"
-                            className="rounded-5 py-2 px-4 fw-bold fs-5 text-light"
+                            className="rounded-5 fw-bold fs-5 text-light py-2 px-4"
                             onClick={closeModal}
                         >
                             Okay
