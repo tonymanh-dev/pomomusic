@@ -10,7 +10,7 @@ const Footer = () => {
                 <button className="btn border-0 ">
                     <a
                         target="_blank"
-                        href="https://twitter.com/manh_tvm"
+                        href="https://bento.me/tonymanh"
                         rel="noreferrer noopener"
                         className="fs-2 "
                     >
@@ -29,7 +29,7 @@ const Footer = () => {
                 </button>
                 <button className="btn border-0 ">
                     <a
-                        href="https://www.linkedin.com/in/tonymanh"
+                        href="https://bento.me/tonymanh"
                         target="_blank"
                         rel="noreferrer noopener"
                         className="fs-2 "
@@ -43,7 +43,7 @@ const Footer = () => {
                 <p className="fs-5 ">
                     Built by{' '}
                     <a
-                        href="https://twitter.com/manh_tvm"
+                        href="https://bento.me/tonymanh"
                         target="_blank"
                         rel="noreferrer noopener"
                         className="text-decoration-none fs-5 fw-bold"
